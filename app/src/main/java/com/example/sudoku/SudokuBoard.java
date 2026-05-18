@@ -25,7 +25,8 @@ public class SudokuBoard extends View {
     private int cellSize;
     private final Sudoku s = new Sudoku();
 
-
+    // ===== INICIALIZACIJA TABLE =====
+    // Nastavi barve, čopiče in začetne nastavitve
     public SudokuBoard(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -49,8 +50,26 @@ public class SudokuBoard extends View {
 
     }
 
+    // =============================
+    // ===== PREVERJANJE ZMAGE =====
+    // =============================
     public boolean checkWin() {
-        return s.isSolved();
+        // Sudoku mora biti popolnoma zapolnjen
+        if (!s.isSolved()) {
+            return false;
+        }
+
+        // Ne sme biti napačnih celic
+        boolean[][] wrongCells = s.getWrongCells();
+
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (wrongCells[r][c]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void showWinDialog() {
@@ -66,6 +85,7 @@ public class SudokuBoard extends View {
                 .show();
     }
 
+    // ===== VNOS ŠTEVIL =====
     // Nastavi število (se izvede v MainActivity ob kliku na gumb)
     public void setNumberPos(int num) {
         s.setNumberPos(num);
@@ -78,6 +98,9 @@ public class SudokuBoard extends View {
         invalidate();
     }
 
+    // =========================
+    // ===== RISANJE TABLE =====
+    // =========================
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -112,6 +135,9 @@ public class SudokuBoard extends View {
         drawNumbers(canvas);
     }
 
+    // ============================
+    // ===== DOTIK UPORABNIKA =====
+    // ============================
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -127,6 +153,9 @@ public class SudokuBoard extends View {
         return false;
     }
 
+    // =============================
+    // ===== OZNAČEVANJE CELIC =====
+    // =============================
     private void colorCell(Canvas canvas, int r, int c) {
         if (s.getSelected_column() != -1 && s.getSelected_row() != -1) {
             canvas.drawRect((c - 1) * cellSize, 0, c * cellSize, cellSize * 9, cellsHighlightColorPaint);
@@ -135,6 +164,9 @@ public class SudokuBoard extends View {
         }
     }
 
+    // =========================
+    // ===== RISANJE MREŽE =====
+    // =========================
     private void drawThickLine() {
         boardColorPaint.setStyle(Paint.Style.STROKE);
         boardColorPaint.setStrokeWidth(10);
@@ -167,6 +199,9 @@ public class SudokuBoard extends View {
         }
     }
 
+    // ==========================
+    // ===== RISANJE ŠTEVIL =====
+    // ==========================
     private void drawNumbers(Canvas canvas) {
         letterPaint.setTextSize(cellSize * 0.7f);
         int[][] board = s.getBoard(); // Dobi lokacije stevil

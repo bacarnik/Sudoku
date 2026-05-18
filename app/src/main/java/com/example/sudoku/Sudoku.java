@@ -9,6 +9,9 @@ public class Sudoku {
     private int selected_row;
     private int selected_column;
 
+    // ===============================
+    // ===== INICIALIZACIJA IGRE =====
+    // ===============================
     public Sudoku() {
         board = new int[9][9];
         fixedCells = new boolean[9][9];
@@ -29,6 +32,10 @@ public class Sudoku {
 
         generateSudoku();
     }
+
+    // ================================
+    // ===== GENERIRANJE SUDOKUJA =====
+    // ================================
     public void generateSudoku() {
         fillValues();
     }
@@ -63,39 +70,9 @@ public class Sudoku {
             }
         }
     }
-
     private int randomGenerator(int num) {
         Random rand = new Random();
         return rand.nextInt(num) + 1;
-    }
-
-    // Preveri če je številka veljavna v board[i][j]
-    public boolean isValid(int i, int j, int num) {
-        return (unUsedInRow(i, num) &&
-                unUsedInCol(j, num) &&
-                unUsedInBox(i - i % 3, j - j % 3, num));
-    }
-
-    private boolean unUsedInRow(int i, int num) {
-        for (int j = 0; j < 9; j++)
-            if (board[i][j] == num)
-                return false;
-        return true;
-    }
-
-    private boolean unUsedInCol(int j, int num) {
-        for (int i = 0; i < 9; i++)
-            if (board[i][j] == num)
-                return false;
-        return true;
-    }
-
-    private boolean unUsedInBox(int rowStart, int colStart, int num) {
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                if (board[rowStart + i][colStart + j] == num)
-                    return false;
-        return true;
     }
 
     // Rekurzivno napolnimo do konca
@@ -109,7 +86,7 @@ public class Sudoku {
         if (i >= 9 && j >= 9)
             return true;
 
-        // Preskočimo diagonalne boce
+        // Preskočimo diagonalne boxe
         if (i < 3) {
             if (j < 3)
                 j = 3;
@@ -160,6 +137,44 @@ public class Sudoku {
         }
     }
 
+
+    // ==============================
+    // ===== PREVERJANJE PRAVIL =====
+    // ==============================
+
+    // Preveri če je številka veljavna v board[i][j]
+    public boolean isValid(int i, int j, int num) {
+        return (unUsedInRow(i, num) &&
+                unUsedInCol(j, num) &&
+                unUsedInBox(i - i % 3, j - j % 3, num));
+    }
+
+    private boolean unUsedInRow(int i, int num) {
+        for (int j = 0; j < 9; j++)
+            if (board[i][j] == num)
+                return false;
+        return true;
+    }
+
+    private boolean unUsedInCol(int j, int num) {
+        for (int i = 0; i < 9; i++)
+            if (board[i][j] == num)
+                return false;
+        return true;
+    }
+
+    private boolean unUsedInBox(int rowStart, int colStart, int num) {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (board[rowStart + i][colStart + j] == num)
+                    return false;
+        return true;
+    }
+
+    // ========================
+    // ===== VNOS IGRALCA =====
+    // ========================
+
     // Nastavi število v izbran kvadratek
     public void setNumberPos(int num) {
         if (selected_row == -1 || selected_column == -1) return;
@@ -176,9 +191,6 @@ public class Sudoku {
             return;
         }
 
-        // ZAČASNO POBRIŠI
-        board[row][col] = 0;
-
         // preveri pravilnost
         boolean ok = isValid(row, col, num);
 
@@ -188,6 +200,9 @@ public class Sudoku {
         wrongCells[row][col] = !ok;
     }
 
+    // =======================
+    // ===== STANJE IGRE =====
+    // =======================
     public boolean isSolved() {
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
@@ -200,6 +215,9 @@ public class Sudoku {
         return true;
     }
 
+    // ============================
+    // ===== GETTER IN SETTER =====
+    // ============================
     public boolean[][] getWrongCells() {
         return wrongCells;
     }
