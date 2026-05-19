@@ -47,7 +47,6 @@ public class SudokuBoard extends View {
 
         wrongCellPaint.setColor(0x55FF0000); // prosojno rdeča
         wrongCellPaint.setStyle(Paint.Style.FILL);
-
     }
 
     // =============================

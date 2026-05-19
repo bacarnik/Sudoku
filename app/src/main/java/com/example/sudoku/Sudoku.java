@@ -22,14 +22,11 @@ public class Sudoku {
     }
 
     public void resetGame() {
-
         board = new int[9][9];
         fixedCells = new boolean[9][9];
         wrongCells = new boolean[9][9];
-
         selected_row = -1;
         selected_column = -1;
-
         generateSudoku();
     }
 
