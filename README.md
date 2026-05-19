@@ -31,6 +31,7 @@ Aplikacija omogoča generiranje Sudoku igre, vnos števil, preverjanje pravilnos
 
 # Struktura projekta
 
+```
 com.example.sudoku
 │
 ├── MainActivity.java
@@ -41,7 +42,7 @@ com.example.sudoku
 │ ├── layout/
 │ ├── values/
 │ └── drawable/
-
+```
 ---
 
 # Kako deluje aplikacija
